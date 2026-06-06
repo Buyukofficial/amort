@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>Mortgage Pro | Large Charts & Complete Analytics</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: #eef2f7;
+      margin: 0;
+      padding: 12px;
+      min-height: 100vh;
+    }
+    .mortgage-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(105deg, #0a2f3f, #135e7a);
+      padding: 1.2rem 1.8rem;
+      color: white;
+    }
+    .header h1 { margin: 0; font-size: 1.6rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: space-between; }
+    .sub { font-size: 0.8rem; opacity: 0.85; margin-top: 6px; }
+    .input-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 1.5rem 1.8rem;
+      background: #fefefe;
+      border-bottom: 1px solid #e2edf2;
+    }
+    .field {
+      flex: 1 1 140px;
+      min-width: 130px;
+    }
+    .field label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #336b81;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .input-card {
+      background: #f3f9fd;
+      border-radius: 20px;
+      border: 1px solid #cfdfe8;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+    .input-card input, .input-card select {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 11px 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+    .btn {
+      border: none;
+      padding: 9px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #eef3f7;
+      transition: 0.2s;
+      font-size: 0.85rem;
+    }
+    .btn-primary { background: #1f7b9e; color: white; }
+    .btn-secondary { background: #e4edf2; color: #285f74; }
+    .eibor-panel {
+      background: #f8fbfd;
+      padding: 0.8rem 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #e2edf2;
+    }
+    .total-rate-badge {
+      background: #1e5f78;
+      color: white;
+      border-radius: 40px;
+      padding: 5px 14px;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .step-rate-panel, .prepay-master {
+      background: #f8fafc;
+      margin: 1rem 1.5rem;
+      border-radius: 28px;
+      padding: 1.2rem;
+      border: 1px solid #e2edf2;
+    }
+    .step-row, .prepay-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .step-input, .prepay-item input { flex: 1; min-width: 110px; padding: 8px 12px; border-radius: 24px; border: 1px solid #ccc; background: white; font-size: 0.85rem; }
+    .remove-prepay, .remove-step { background: #ffe0db; border: none; border-radius: 40px; padding: 6px 14px; cursor: pointer; font-weight: 600; }
+    .add-prepay-btn, #addStepBtn { background: #e7eef3; border: none; padding: 10px; border-radius: 40px; width: 100%; margin-top: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .savings-badge { background: #e0f2e9; border-radius: 40px; padding: 6px 16px; font-size: 0.75rem; font-weight: 700; color: #1e6f5c; text-align: center; }
+    .summary-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 1.2rem 1.8rem;
+      background: #fafeff;
+      border-bottom: 1px solid #e0eef5;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 28px;
+      padding: 0.9rem 1.2rem;
+      flex: 1;
+      min-width: 130px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1px solid #e2edf2;
+    }
+    .stat-label { font-size: 0.7rem; font-weight: 700; color: #5f94a8; letter-spacing: 0.3px; }
+    .stat-number { font-size: 1.4rem; font-weight: 800; color: #0c4e6b; word-break: break-word; }
+    
+    /* ENLARGED CHARTS GRID - BIGGER & BETTER */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .chart-card {
+      background: white;
+      border-radius: 28px;
+      padding: 1.2rem;
+      border: 1px solid #e2edf5;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s;
+    }
+    .chart-card h4 {
+      margin: 0 0 16px 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a5f7a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-left: 4px solid #1f7b9e;
+      padding-left: 12px;
+    }
+    /* LARGER CANVAS dimensions */
+    .chart-card canvas {
+      max-height: 320px;
+      height: 320px;
+      width: 100%;
+    }
+    /* full-width for single chart on small screens */
+    @media (max-width: 900px) {
+      .charts-grid { grid-template-columns: 1fr; }
+      .chart-card canvas { height: 280px; }
+    }
+    .amort-wrapper { padding: 1.2rem 1.8rem 2rem; }
+    .table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid #e2edf0; margin-top: 1.5rem; }
+    .amort-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 650px; }
+    .amort-table th, .amort-table td { padding: 12px 10px; text-align: right; border-bottom: 1px solid #eceff3; }
+    .text-left { text-align: left; font-weight: 600; color: #0a3f55; }
+    .footer-note { font-size: 0.65rem; text-align: center; color: #6c93a3; margin-top: 1.5rem; padding-top: 0.5rem; border-top: 1px solid #e2edf2; }
+    @media (max-width: 600px) {
+      .input-grid, .summary-strip { padding: 1rem; }
+      .step-row, .prepay-item { flex-direction: column; align-items: stretch; }
+      .chart-card canvas { height: 240px; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="mortgage-container">
+  <div class="header">
+    <h1>🏡 Mortgage Pro <span style="font-size:0.9rem;">| Large Charts + Full Analytics</span></h1>
+    <div class="sub">Step-up/down • Fixed/Floating • Prepayments • Dynamic visualizations</div>
+  </div>
+
+  <div class="input-grid">
+    <div class="field"><label>🏦 Property (AED)</label><div class="input-card"><span>د.إ</span><input type="number" id="propertyVal" value="1250000" step="25000"></div></div>
+    <div class="field"><label>📉 Down Payment</label><div class="input-card"><span>د.إ</span><input type="number" id="downPayment" value="250000" step="10000"></div></div>
+    <div class="field"><label>📅 Term (Years)</label><div class="input-card"><input type="number" id="loanYears" value="25" step="1" min="1" max="30"></div></div>
+    <div class="field"><label>🔁 Rate Type</label><div class="input-card"><select id="rateTypeSelect"><option value="floating">Floating (EIBOR+Margin)</option><option value="fixed">Fixed Rate (%)</option></select></div></div>
+    <div class="field" id="fixedRateDiv" style="display:none;"><label>📌 Fixed Rate (%)</label><div class="input-card"><input type="number" id="fixedRate" value="4.5" step="0.1"><span>%</span></div></div>
+    <div class="field" id="marginDiv"><label>➕ Bank Margin (%)</label><div class="input-card"><input type="number" id="marginRate" value="1.25" step="0.1"><span>%</span></div></div>
+    <div><button class="btn btn-primary" id="refreshBtn">⟳ Update</button></div>
+  </div>
+
+  <div class="eibor-panel" id="eiborPanel">
+    <div><span style="font-weight:600;">📡 EIBOR 3M:</span> <strong id="eiborValue">—%</strong> &nbsp;| Margin: <span id="marginDisplay">1.25</span>%</div>
+    <div><span class="total-rate-badge" id="totalRateSpan">Total: —%</span></div>
+    <div id="eiborTimestamp" style="font-size:0.7rem;">—</div>
+  </div>
+
+  <!-- Step Rates -->
+  <div class="step-rate-panel">
+    <strong>📈 Step Up / Down Rates (periodic)</strong>
+    <div id="stepRatesList"></div>
+    <button id="addStepBtn" class="add-prepay-btn" style="width:auto; margin-top:8px;">+ Add Rate Period</button>
+  </div>
+
+  <!-- Prepayments -->
+  <div class="prepay-master">
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center;"><strong>💰 Multiple Prepayments</strong><div class="savings-badge" id="multiSavingsMsg">Interest saved: —</div></div>
+    <div id="prepaymentsList" class="prepay-list"></div>
+    <button id="addPrepayBtn" class="add-prepay-btn">+ Add Prepayment</button>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="summary-strip">
+    <div class="stat-card"><div class="stat-label">LOAN AMOUNT</div><div class="stat-number" id="loanAmountStat">—</div></div>
+    <div class="stat-card"><div class="stat-label">MONTHLY PAYMENT</div><div class="stat-number" id="monthlyStat">—</div></div>
+    <div class="stat-card"><div class="stat-label">TOTAL INTEREST</div><div class="stat-number" id="totalInterestStat">—</div></div>
+    <div class="stat-card"><div class="stat-label">TOTAL REPAYMENT</div><div class="stat-number" id="totalPaidStat">—</div></div>
+  </div>
+
+  <!-- BIG CHARTS GRID (2x2) -->
+  <div class="amort-wrapper">
+    <div class="charts-grid">
+      <div class="chart-card"><h4>📉 Remaining Balance & Principal Paid</h4><canvas id="balanceChartCanvas"></canvas></div>
+      <div class="chart-card"><h4>🍩 Interest vs Principal (Total)</h4><canvas id="pieChartCanvas"></canvas></div>
+      <div class="chart-card"><h4>📊 Annual Principal vs Interest</h4><canvas id="annualStackCanvas"></canvas></div>
+      <div class="chart-card"><h4>📈 Monthly Payment Breakdown (First 36 months)</h4><canvas id="monthlyStackCanvas"></canvas></div>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="amort-table"><thead><tr><th class="text-left">Month</th><th>Payment (AED)</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="scheduleBody"></tbody></table>
+    </div>
+    <div class="footer-note">* Step rates + prepayments affect amortization. Charts auto-update with all parameters. Larger canvas for better visibility.</div>
+  </div>
+</div>
+
+<script>
+  // ---------- EIBOR simulation ----------
+  let currentEibor = 4.85;
+  let eiborInterval = null;
+  
+  // DOM elements
+  const propertyInput = document.getElementById('propertyVal');
+  const downPaymentInput = document.getElementById('downPayment');
+  const yearsInput = document.getElementById('loanYears');
+  const rateTypeSelect = document.getElementById('rateTypeSelect');
+  const fixedRateInput = document.getElementById('fixedRate');
+  const marginInput = document.getElementById('marginRate');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const eiborSpan = document.getElementById('eiborValue');
+  const marginDisplaySpan = document.getElementById('marginDisplay');
+  const totalRateSpan = document.getElementById('totalRateSpan');
+  const eiborTimestampSpan = document.getElementById('eiborTimestamp');
+  const multiSavingsMsg = document.getElementById('multiSavingsMsg');
+  const fixedRateDiv = document.getElementById('fixedRateDiv');
+  const marginDiv = document.getElementById('marginDiv');
+  const eiborPanel = document.getElementById('eiborPanel');
+  const loanAmountStat = document.getElementById('loanAmountStat');
+  const monthlyStat = document.getElementById('monthlyStat');
+  const totalInterestStat = document.getElementById('totalInterestStat');
+  const totalPaidStat = document.getElementById('totalPaidStat');
+  const scheduleBody = document.getElementById('scheduleBody');
+  
+  let currentBalanceChart = null, currentPieChart = null, currentAnnualChart = null, currentMonthlyStack = null;
+  let prepaymentsArray = [{ month: 12, amount: 50000 }, { month: 24, amount: 30000 }];
+  let stepRatesArray = [
+    { startMonth: 1, endMonth: 60, rate: 4.25 },
+    { startMonth: 61, endMonth: 300, rate: 5.0 }
+  ];
+  
+  function formatAEDdec(val) { return new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(val); }
+  function formatAED(v) { return new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 2 }).format(v); }
+  
+  function getMonthlyRateForMonth(month, getAnnualBaseFunc) {
+    let baseAnnual = getAnnualBaseFunc(month);
+    for (let step of stepRatesArray) {
+      if (month >= step.startMonth && month <= step.endMonth) return step.rate / 100 / 12;
+    }
+    return baseAnnual / 100 / 12;
+  }
+  
+  function computeMortgageStepMulti(principal, totalMonths, getAnnualRateFunc, prepaymentsList) {
+    if (principal <= 0) return { schedule: [], monthlyPayment: 0, totalInterest: 0, totalPaid: 0, savedInterest: 0 };
+    const firstMonthlyRate = getMonthlyRateForMonth(1, getAnnualRateFunc);
+    let monthlyPayment = 0;
+    if (firstMonthlyRate === 0) monthlyPayment = principal / totalMonths;
+    else {
+      const factor = Math.pow(1 + firstMonthlyRate, totalMonths);
+      monthlyPayment = principal * firstMonthlyRate * factor / (factor - 1);
+    }
+    if (isNaN(monthlyPayment)) monthlyPayment = principal / totalMonths;
+    
+    // original interest (without prepay)
+    let origInterest = 0, balOrig = principal;
+    for (let m = 1; m <= totalMonths && balOrig > 0.01; m++) {
+      const r = getMonthlyRateForMonth(m, getAnnualRateFunc);
+      let intTemp = balOrig * r;
+      let prinTemp = monthlyPayment - intTemp;
+      if (m === totalMonths || prinTemp > balOrig) prinTemp = balOrig;
+      if (prinTemp < 0) prinTemp = 0;
+      origInterest += Math.max(0, intTemp);
+      balOrig -= prinTemp;
+    }
+    
+    const sortedPrepays = [...prepaymentsList].filter(p => p.amount > 0 && p.month >= 1).sort((a,b)=>a.month-b.month);
+    let balance = principal, schedule = [], totalInterestActual = 0, activeIdx = 0, maxMonths = totalMonths + 240;
+    for (let month = 1; month <= maxMonths; month++) {
+      if (balance <= 0.001) break;
+      let prepaidTotal = 0;
+      while (activeIdx < sortedPrepays.length && sortedPrepays[activeIdx].month === month) {
+        let extra = Math.min(sortedPrepays[activeIdx].amount, balance);
+        if (extra > 0) { balance -= extra; prepaidTotal += extra; }
+        activeIdx++;
+      }
+      if (balance < 0) balance = 0;
+      const monthlyRateCurr = getMonthlyRateForMonth(month, getAnnualRateFunc);
+      let interestPayment = balance * monthlyRateCurr;
+      let principalPayment = monthlyPayment - interestPayment;
+      if (balance - principalPayment < 0.01 || principalPayment <= 0) {
+        principalPayment = balance;
+        interestPayment = monthlyPayment - principalPayment;
+        if (interestPayment < 0) interestPayment = 0;
+      }
+      if (principalPayment > balance) principalPayment = balance;
+      if (principalPayment < 0) principalPayment = 0;
+      interestPayment = Math.max(0, interestPayment);
+      totalInterestActual += interestPayment;
+      balance -= principalPayment;
+      if (balance < 0) balance = 0;
+      schedule.push({ period: month, payment: monthlyPayment, principal: principalPayment, interest: interestPayment, remainingBalance: balance, prepayExtra: prepaidTotal });
+      if (balance <= 0.001) break;
+      if (month > totalMonths + 180) break;
+    }
+    const totalPaid = schedule.reduce((sum,r)=>sum + r.payment,0) + sortedPrepays.reduce((sum,p)=>sum+p.amount,0);
+    return { schedule, monthlyPayment, totalInterest: totalInterestActual, totalPaid, savedInterest: Math.max(0, origInterest - totalInterestActual) };
+  }
+  
+  function getCurrentAnnualRateForMonth(month) {
+    if (rateTypeSelect.value === 'fixed') {
+      let fixed = parseFloat(fixedRateInput.value);
+      return isNaN(fixed) ? 4.5 : fixed;
+    } else {
+      let margin = parseFloat(marginInput.value);
+      return currentEibor + (isNaN(margin) ? 1.25 : margin);
+    }
+  }
+  
+  // ENHANCED Charts with larger dimensions and better styling
+  function renderAllCharts(schedule, monthlyPayment, totalInterest, totalPrincipal) {
+    // 1. Balance & cumulative principal (line) - BIG
+    const labels = schedule.map(r => `M${r.period}`);
+    const balances = schedule.map(r => r.remainingBalance);
+    let cumP = 0, cumArr = [];
+    for (let r of schedule) { cumP += r.principal; cumArr.push(cumP); }
+    if (currentBalanceChart) currentBalanceChart.destroy();
+    const ctxBal = document.getElementById('balanceChartCanvas').getContext('2d');
+    currentBalanceChart = new Chart(ctxBal, {
+      type: 'line', data: { labels, datasets: [
+        { label: 'Remaining Balance', data: balances, borderColor: '#1f7b9e', backgroundColor: 'rgba(31,123,158,0.08)', borderWidth: 3, fill: true, tension: 0.2, pointRadius: 0 },
+        { label: 'Cumulative Principal Paid', data: cumArr, borderColor: '#44b39c', borderWidth: 2.5, borderDash: [8,6], fill: false, tension: 0.2, pointRadius: 0 }
+      ] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top', labels: { font: { size: 11, weight: 'bold' } } }, tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatAED(ctx.raw)}` } } }, scales: { y: { ticks: { callback: (v) => formatAED(v), font: { size: 10 } }, title: { display: true, text: 'Amount (AED)', font: { size: 11 } } }, x: { ticks: { maxTicksLimit: 12, font: { size: 9 } }, title: { display: true, text: 'Month', font: { size: 11 } } } } }
+    });
+    
+    // 2. Pie chart (larger)
+    if (currentPieChart) currentPieChart.destroy();
+    const ctxPie = document.getElementById('pieChartCanvas').getContext('2d');
+    currentPieChart = new Chart(ctxPie, {
+      type: 'pie', data: { labels: ['Total Principal Paid', 'Total Interest Paid'], datasets: [{ data: [totalPrincipal, totalInterest], backgroundColor: ['#2c7a5e', '#e2a65e'], borderWidth: 0, hoverOffset: 12 }] },
+      options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right', labels: { font: { size: 12, weight: '500' } } }, tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${formatAED(ctx.raw)} (${((ctx.raw/(totalPrincipal+totalInterest))*100).toFixed(1)}%)` } } } }
+    });
+    
+    // 3. Annual Stacked Bar - bigger bars
+    const annualMap = new Map();
+    for (let row of schedule) {
+      const year = Math.ceil(row.period / 12);
+      if (!annualMap.has(year)) annualMap.set(year, { principal: 0, interest: 0 });
+      let data = annualMap.get(year);
+      data.principal += row.principal;
+      data.interest += row.interest;
+    }
+    const yearsSorted = Array.from(annualMap.keys()).sort((a,b)=>a-b);
+    const annualPrincipals = yearsSorted.map(y => annualMap.get(y).principal);
+    const annualInterests = yearsSorted.map(y => annualMap.get(y).interest);
+    if (currentAnnualChart) currentAnnualChart.destroy();
+    const ctxAnnual = document.getElementById('annualStackCanvas').getContext('2d');
+    currentAnnualChart = new Chart(ctxAnnual, {
+      type: 'bar', data: { labels: yearsSorted.map(y => `Year ${y}`), datasets: [
+        { label: 'Principal Paid', data: annualPrincipals, backgroundColor: '#2c7a5e', borderRadius: 8, barPercentage: 0.7 },
+        { label: 'Interest Paid', data: annualInterests, backgroundColor: '#e2a65e', borderRadius: 8, barPercentage: 0.7 }
+      ] }, options: { responsive: true, maintainAspectRatio: true, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, ticks: { callback: (v) => formatAED(v), font: { size: 10 } }, title: { display: true, text: 'Amount (AED)' } } }, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatAED(ctx.raw)}` } }, legend: { position: 'top', labels: { font: { size: 11 } } } } }
+    });
+    
+    // 4. Monthly payment breakdown: first 48 months or full for better visibility
+    const maxMonths = Math.min(48, schedule.length);
+    const monthLabels = schedule.slice(0, maxMonths).map(r => r.period);
+    const monthlyPrincipals = schedule.slice(0, maxMonths).map(r => r.principal);
+    const monthlyInterests = schedule.slice(0, maxMonths).map(r => r.interest);
+    if (currentMonthlyStack) currentMonthlyStack.destroy();
+    const ctxMonthStack = document.getElementById('monthlyStackCanvas').getContext('2d');
+    currentMonthlyStack = new Chart(ctxMonthStack, {
+      type: 'bar', data: { labels: monthLabels, datasets: [
+        { label: 'Principal Payment', data: monthlyPrincipals, backgroundColor: '#1f7b9e', borderRadius: 6, barPercentage: 0.8 },
+        { label: 'Interest Payment', data: monthlyInterests, backgroundColor: '#f4b942', borderRadius: 6, barPercentage: 0.8 }
+      ] }, options: { responsive: true, maintainAspectRatio: true, scales: { x: { title: { display: true, text: 'Month', font: { size: 10 } }, ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 24 } }, y: { ticks: { callback: (v) => formatAED(v) }, title: { display: true, text: 'Amount (AED)' } } }, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatAED(ctx.raw)}` } }, legend: { position: 'top', labels: { font: { size: 10 } } } } }
+    });
+  }
+  
+  function fullRender() {
+    let property = parseFloat(propertyInput.value) || 800000;
+    let down = parseFloat(downPaymentInput.value) || 0;
+    let years = parseInt(yearsInput.value) || 25;
+    if (down > property) down = property * 0.2;
+    let principal = property - down;
+    if (principal <= 0) principal = 50000;
+    if (years > 35) years = 35;
+    const totalMonths = years * 12;
+    
+    const isFloating = rateTypeSelect.value === 'floating';
+    marginDiv.style.display = isFloating ? 'block' : 'none';
+    fixedRateDiv.style.display = isFloating ? 'none' : 'block';
+    eiborPanel.style.display = isFloating ? 'flex' : 'none';
+    if (isFloating) {
+      let marginVal = parseFloat(marginInput.value) || 1.25;
+      marginDisplaySpan.innerText = marginVal.toFixed(2);
+      totalRateSpan.innerText = `Total: ${(currentEibor + marginVal).toFixed(3)}%`;
+    } else {
+      let fixedVal = parseFloat(fixedRateInput.value) || 4.5;
+      totalRateSpan.innerText = `Fixed: ${fixedVal.toFixed(2)}%`;
+    }
+    
+    const validPrepays = prepaymentsArray.filter(p => p.amount > 0 && p.month > 0);
+    const { schedule, monthlyPayment, totalInterest, totalPaid, savedInterest } = computeMortgageStepMulti(principal, totalMonths, getCurrentAnnualRateForMonth, validPrepays);
+    const totalPrincipal = schedule.reduce((sum, r) => sum + r.principal, 0);
+    
+    loanAmountStat.innerText = formatAEDdec(principal);
+    monthlyStat.innerText = formatAED(monthlyPayment);
+    totalInterestStat.innerText = formatAED(totalInterest);
+    totalPaidStat.innerText = formatAED(totalPaid);
+    multiSavingsMsg.innerHTML = savedInterest > 0 ? `💡 Saved: ${formatAED(savedInterest)}` : `📌 No prepayment saving`;
+    
+    if (!schedule.length) { scheduleBody.innerHTML = '<tr><td colspan="5">No data</td></tr>'; return; }
+    let html = '';
+    for (let s of schedule) {
+      const prepayFlag = s.prepayExtra > 0 ? ' 🟢' : '';
+      html += `<tr><td class="text-left">${s.period}${prepayFlag}</td><td>${formatAED(s.payment)}</td><td>${formatAED(s.principal)}</td><td>${formatAED(s.interest)}</td><td>${formatAED(s.remainingBalance)}</td></tr>`;
+    }
+    scheduleBody.innerHTML = html;
+    renderAllCharts(schedule, monthlyPayment, totalInterest, totalPrincipal);
+  }
+  
+  // Prepayments UI
+  function renderPrepaysUI() {
+    const container = document.getElementById('prepaymentsList');
+    container.innerHTML = '';
+    if (prepaymentsArray.length === 0) prepaymentsArray.push({ month: 12, amount: 0 });
+    prepaymentsArray.forEach((p, idx) => {
+      const div = document.createElement('div'); div.className = 'prepay-item';
+      div.innerHTML = `<input type="number" class="prepay-month" value="${p.month}" step="1" min="1" placeholder="Month"><input type="number" class="prepay-amount" value="${p.amount}" step="10000" placeholder="Amount (AED)"><button class="remove-prepay" data-idx="${idx}">🗑 Remove</button>`;
+      const monthInp = div.querySelector('.prepay-month');
+      const amtInp = div.querySelector('.prepay-amount');
+      monthInp.addEventListener('change', (e) => { p.month = parseInt(e.target.value) || 1; fullRender(); });
+      amtInp.addEventListener('change', (e) => { p.amount = parseFloat(e.target.value) || 0; fullRender(); });
+      div.querySelector('.remove-prepay').addEventListener('click', () => { if (prepaymentsArray.length > 1) { prepaymentsArray.splice(idx,1); renderPrepaysUI(); fullRender(); } else { p.amount=0; p.month=12; renderPrepaysUI(); fullRender(); } });
+      container.appendChild(div);
+    });
+  }
+  function addPrepayment() { prepaymentsArray.push({ month: 36, amount: 40000 }); renderPrepaysUI(); fullRender(); }
+  
+  // Step rates UI
+  function renderStepRatesUI() {
+    const container = document.getElementById('stepRatesList');
+    container.innerHTML = '';
+    stepRatesArray.forEach((step, idx) => {
+      const div = document.createElement('div'); div.className = 'step-row';
+      div.innerHTML = `<div class="step-input"><label>From Month</label><input type="number" class="step-start" value="${step.startMonth}"></div><div class="step-input"><label>To Month</label><input type="number" class="step-end" value="${step.endMonth}"></div><div class="step-input"><label>Rate %</label><input type="number" class="step-rate" value="${step.rate}" step="0.1"></div><button class="remove-step" data-idx="${idx}">✖</button>`;
+      const startInp = div.querySelector('.step-start'), endInp = div.querySelector('.step-end'), rateInp = div.querySelector('.step-rate');
+      startInp.addEventListener('change', (e) => { step.startMonth = parseInt(e.target.value) || 1; stepRatesArray.sort((a,b)=>a.startMonth-b.startMonth); renderStepRatesUI(); fullRender(); });
+      endInp.addEventListener('change', (e) => { step.endMonth = parseInt(e.target.value) || step.startMonth+1; fullRender(); });
+      rateInp.addEventListener('change', (e) => { step.rate = parseFloat(e.target.value) || 0; fullRender(); });
+      div.querySelector('.remove-step').addEventListener('click', () => { stepRatesArray.splice(idx,1); renderStepRatesUI(); fullRender(); });
+      container.appendChild(div);
+    });
+  }
+  function addStep() { stepRatesArray.push({ startMonth: 1, endMonth: 12, rate: 4.0 }); renderStepRatesUI(); fullRender(); }
+  
+  // EIBOR simulation
+  function updateEibor(newVal) { currentEibor = Math.min(8.2, Math.max(1.2, newVal)); eiborSpan.innerText = currentEibor.toFixed(3)+'%'; fullRender(); }
+  function simulateEiborTick() { let change = (Math.random()-0.5)*0.06; let newVal = currentEibor + change + (4.7-currentEibor)*0.02; newVal = Math.min(7.5, Math.max(2.0, newVal)); eiborTimestampSpan.innerText = new Date().toLocaleTimeString(); updateEibor(newVal); }
+  function startEiborUpdates() { updateEibor(4.85); if(eiborInterval) clearInterval(eiborInterval); eiborInterval = setInterval(simulateEiborTick, 35000); }
+  
+  function resetDefaults() {
+    propertyInput.value = '1250000'; downPaymentInput.value = '250000'; yearsInput.value = '25'; marginInput.value = '1.25'; fixedRateInput.value = '4.5'; rateTypeSelect.value = 'floating';
+    stepRatesArray = [{ startMonth:1, endMonth:60, rate:4.25 }, { startMonth:61, endMonth:300, rate:5.0 }];
+    prepaymentsArray = [{ month:12, amount:50000 }, { month:24, amount:30000 }];
+    renderStepRatesUI(); renderPrepaysUI(); fullRender();
+  }
+  
+  function bindEvents() {
+    refreshBtn.addEventListener('click', () => fullRender());
+    rateTypeSelect.addEventListener('change', () => fullRender());
+    marginInput.addEventListener('input', () => fullRender());
+    fixedRateInput.addEventListener('input', () => fullRender());
+    propertyInput.addEventListener('input', () => fullRender());
+    downPaymentInput.addEventListener('input', () => fullRender());
+    yearsInput.addEventListener('input', () => fullRender());
+    document.getElementById('addPrepayBtn').addEventListener('click', addPrepayment);
+    document.getElementById('addStepBtn').addEventListener('click', addStep);
+    const resetBtn = document.createElement('button'); resetBtn.innerText = '🔄 Reset All'; resetBtn.className = 'btn btn-secondary'; resetBtn.addEventListener('click', resetDefaults);
+    document.querySelector('.input-grid').appendChild(resetBtn);
+  }
+  
+  function init() { bindEvents(); renderStepRatesUI(); renderPrepaysUI(); startEiborUpdates(); fullRender(); }
+  init();
+</script>
+</body>
+</html>
