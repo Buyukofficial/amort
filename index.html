@@ -209,7 +209,6 @@
     .btn { border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
     .btn-primary { background: #1f7b9e; color: white; }
     .btn-primary:hover { background: #0e6583; transform: translateY(-1px); }
-    .btn-affiliate { background: #ffc107; color: #1a5f7a; font-weight: 800; }
     .btn-secondary { background: #eef3f7; color: #2a5f74; border: 1px solid #cde0e8; }
 
     /* Step & Prepay Panels - Clean consistent styling */
@@ -291,28 +290,6 @@
     .add-prepay-btn:hover, #addStepBtn:hover { background: #e2eaf0; transform: translateY(-1px); }
     .savings-badge { background: #e0f2e9; border-radius: 40px; padding: 6px 16px; font-size: 0.75rem; font-weight: 700; color: #1e6f5c; }
 
-    /* Partner Grid */
-    .partner-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: space-between;
-      margin: 1rem 1.8rem;
-    }
-    .partner-card {
-      flex: 1;
-      min-width: 170px;
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid var(--border-color);
-      text-decoration: none;
-      color: var(--text-primary);
-      transition: 0.2s;
-    }
-    .partner-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-
     /* EIBOR Panel */
     .eibor-panel {
       background: var(--panel-bg);
@@ -391,20 +368,12 @@
     <div class="sub">Expert guidance by <strong>Mr. Sayed</strong> – 15+ years experience | 1000+ Happy Clients</div>
   </div>
 
-  <!-- SAYED SECTION 1 -->
+  <!-- SAYED SECTION 1 - Main Hero -->
   <div class="sayed-hero">
     <div class="sayed-name">🎯 MR. SAYED – MORTGAGE EXPERT</div>
     <div style="font-size:1rem; margin:5px;">📢 FREE Consultation | Best Rates Guaranteed | Zero Hidden Fees</div>
     <div class="sayed-phone">📞 +971 52 920 786</div>
     <div style="font-size:0.9rem;">💬 WhatsApp: +971 52 920 786 | 24/7 Support</div>
-  </div>
-
-  <!-- AFFILIATE PARTNERS -->
-  <div class="partner-grid">
-    <a href="#" class="partner-card" id="yubiLink" target="_blank"><div>🏦 Yubi</div><div style="font-size:0.7rem;">Compare 10+ banks</div></a>
-    <a href="#" class="partner-card" id="bankbazaarLink" target="_blank"><div>📊 BankBazaar</div><div style="font-size:0.7rem;">Instant rate check</div></a>
-    <a href="#" class="partner-card" id="paisabazaarLink" target="_blank"><div>💰 Paisabazaar</div><div style="font-size:0.7rem;">Free credit score</div></a>
-    <a href="#" class="partner-card" id="policybazaarLink" target="_blank"><div>🛡️ PolicyBazaar</div><div style="font-size:0.7rem;">Loan insurance</div></a>
   </div>
 
   <!-- SAYED SECTION 2 - Mini Banner -->
@@ -420,7 +389,6 @@
     <div class="field" id="fixedRateDiv" style="display:none;"><label>📌 Fixed Rate (%)</label><div class="input-card"><input type="number" id="fixedRate" value="4.5" step="0.1"><span>%</span></div></div>
     <div class="field" id="marginDiv"><label>➕ Bank Margin (%)</label><div class="input-card"><input type="number" id="marginRate" value="1.25" step="0.1"><span>%</span></div></div>
     <div><button class="btn btn-primary" id="refreshBtn">⟳ Update</button></div>
-    <div><button class="btn btn-affiliate" id="compareLoanBtn">🔍 Get Yubi Offers</button></div>
   </div>
 
   <div class="eibor-panel">
@@ -434,14 +402,14 @@
     🎯 <strong>Mr. Sayed's Direct Line:</strong> <span style="font-size:1.2rem;">📞 +971 52 920 786</span> | WhatsApp Available 24/7
   </div>
 
-  <!-- STEP RATES PANEL - Clean consistent styling -->
+  <!-- STEP RATES PANEL -->
   <div class="step-rate-panel">
     <strong>📈 Step Up / Down Rates (Custom rate periods)</strong>
     <div id="stepRatesList"></div>
     <button id="addStepBtn" class="add-prepay-btn">+ Add Rate Period</button>
   </div>
 
-  <!-- PREPAYMENT PANEL - Clean consistent styling -->
+  <!-- PREPAYMENT PANEL -->
   <div class="prepay-master">
     <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
       <strong>💰 Prepayments (Reduce Principal Early)</strong>
@@ -500,19 +468,6 @@
     localStorage.setItem('mortgageTheme', document.body.classList.contains('dark') ? 'dark' : 'light');
   };
   if(localStorage.getItem('mortgageTheme') === 'dark') document.body.classList.add('dark');
-
-  // Affiliate Links
-  const links = {
-    yubi: "https://www.yubi.co/?utm_source=mortgagepro",
-    bankbazaar: "https://www.bankbazaar.com/home-loan.html?aff=mortgagepro",
-    paisabazaar: "https://www.paisabazaar.com/home-loan/?src=mortgagepro",
-    policybazaar: "https://www.policybazaar.ae/home-insurance/?aff=mortgagepro"
-  };
-  document.getElementById('yubiLink').href = links.yubi;
-  document.getElementById('bankbazaarLink').href = links.bankbazaar;
-  document.getElementById('paisabazaarLink').href = links.paisabazaar;
-  document.getElementById('policybazaarLink').href = links.policybazaar;
-  document.getElementById('compareLoanBtn').onclick = () => window.open(links.yubi, '_blank');
 
   // Mortgage Calculation Engine
   let currentEibor = 4.85;
@@ -611,7 +566,9 @@
   document.getElementById('exportPDFBtn').onclick = () => { const element = document.querySelector('.table-wrapper'); html2pdf().from(element).set({ margin: 0.5, filename: 'mortgage_schedule.pdf' }).save(); };
   document.getElementById('exportCSVBtn').onclick = () => { let csv = "Month,Payment,Principal,Interest,Balance\n"; const rows = document.querySelectorAll('#scheduleBody tr'); rows.forEach(row=>{ const cols=row.querySelectorAll('td'); if(cols.length) csv+=`${cols[0].innerText},${cols[1].innerText},${cols[2].innerText},${cols[3].innerText},${cols[4].innerText}\n`; }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='amortization.csv'; a.click(); };
   
+  // EIBOR real-time simulation
   setInterval(() => { let newVal = currentEibor + (Math.random()-0.5)*0.06 + (4.7-currentEibor)*0.02; newVal=Math.min(7.5,Math.max(2,newVal)); currentEibor=newVal; eiborSpan.innerText=currentEibor.toFixed(3)+'%'; fullRender(); }, 35000);
+  
   renderStepRatesUI(); renderPrepaysUI(); fullRender();
 </script>
 </body>
