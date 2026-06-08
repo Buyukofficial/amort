@@ -3,196 +3,413 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-  <title>Mortgage Pro | Large Charts & Complete Analytics</title>
+  <meta name="description" content="Professional UAE Mortgage Calculator with EIBOR rates, fixed/floating options, step rates, prepayments, and advanced charts. Expert guidance from Mr. Sayed.">
+  <meta name="keywords" content="mortgage calculator, UAE, EIBOR, home loan, amortization, Sayed, mortgage advisor">
+  <meta name="author" content="Mortgage Pro">
+  <title>Mortgage Pro | Expert Guidance by Mr. Sayed | UAE Home Loan Calculator</title>
+  
+  <!-- html2pdf for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
   <style>
     * {
-      box-sizing: border-box;
-      font-family: system-ui, 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
-    }
-    body {
-      background: #eef2f7;
       margin: 0;
-      padding: 12px;
-      min-height: 100vh;
+      padding: 0;
+      box-sizing: border-box;
     }
+
+    /* Light Theme (Default) */
+    :root {
+      --bg-body: linear-gradient(145deg, #e9eef3 0%, #dce4ec 100%);
+      --container-bg: #ffffff;
+      --header-bg: linear-gradient(115deg, #0b3b4f 0%, #1a5f7a 100%);
+      --text-primary: #1a2c38;
+      --text-secondary: #2d6a82;
+      --card-bg: #ffffff;
+      --border-color: #e2edf2;
+      --input-bg: #f3f9fd;
+      --panel-bg: #fafdfe;
+      --stat-bg: #ffffff;
+      --footer-color: #6c93a3;
+      --step-bg: #ffffff;
+      --label-color: #336b81;
+    }
+
+    /* Dark Theme */
+    body.dark {
+      --bg-body: linear-gradient(145deg, #1a1e2c 0%, #0f1219 100%);
+      --container-bg: #1e2432;
+      --header-bg: linear-gradient(115deg, #071e28 0%, #0f3a4a 100%);
+      --text-primary: #e0e6ed;
+      --text-secondary: #8bb3c8;
+      --card-bg: #262d3d;
+      --border-color: #334155;
+      --input-bg: #1e2537;
+      --panel-bg: #1a2130;
+      --stat-bg: #262d3d;
+      --footer-color: #7e95ab;
+      --step-bg: #1a2130;
+      --label-color: #8bb3c8;
+    }
+
+    body {
+      background: var(--bg-body);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      padding: 20px;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.2s;
+    }
+
     .mortgage-container {
       max-width: 1600px;
       margin: 0 auto;
-      background: white;
-      border-radius: 32px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      background: var(--container-bg);
+      border-radius: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
       overflow: hidden;
+      transition: background 0.3s;
     }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: linear-gradient(135deg, #1a5f7a, #0e4d64);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover { transform: scale(1.05); }
+
+    /* EYE-CATCHING SAYED SECTION */
+    .sayed-hero {
+      background: linear-gradient(135deg, #ffd89b 0%, #c7e9fb 100%);
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: 30px;
+      margin: 1rem 1.8rem;
+      border: 3px solid #ffc107;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      animation: glowPulse 2s infinite;
+    }
+    body.dark .sayed-hero {
+      background: linear-gradient(135deg, #b86f00 0%, #1a5f7a 100%);
+      border-color: #ffd966;
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,193,7,0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(255,193,7,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,193,7,0); }
+    }
+    .sayed-name {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #c0392b;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    body.dark .sayed-name { color: #ffaa66; }
+    .sayed-phone {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: #27ae60;
+      display: inline-block;
+      padding: 10px 30px;
+      border-radius: 60px;
+      color: white;
+      margin: 10px 0;
+      letter-spacing: 2px;
+    }
+
+    /* Floating Contact Button */
+    .floating-contact {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      border-radius: 60px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: 700;
+      text-decoration: none;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-8px); }
+    }
+
+    /* Popup Modal */
+    .popup-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup-content {
+      background: var(--container-bg);
+      border-radius: 40px;
+      max-width: 450px;
+      width: 90%;
+      padding: 2rem;
+      text-align: center;
+      border: 3px solid #ffc107;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .close-popup { float: right; font-size: 28px; cursor: pointer; }
+
     .header {
-      background: linear-gradient(105deg, #0a2f3f, #135e7a);
-      padding: 1.2rem 1.8rem;
+      background: var(--header-bg);
+      padding: 1.8rem 2rem;
       color: white;
     }
-    .header h1 { margin: 0; font-size: 1.6rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: space-between; }
-    .sub { font-size: 0.8rem; opacity: 0.85; margin-top: 6px; }
+    .header h1 { font-size: 1.9rem; font-weight: 700; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between; }
+    .badge-pro { background: rgba(255,215,0,0.2); backdrop-filter: blur(4px); padding: 6px 16px; border-radius: 40px; font-size: 0.8rem; }
+    .sub { font-size: 0.85rem; opacity: 0.9; margin-top: 8px; }
+
+    /* Input Grid */
     .input-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      padding: 1.5rem 1.8rem;
-      background: #fefefe;
-      border-bottom: 1px solid #e2edf2;
+      gap: 16px;
+      padding: 1.8rem 2rem;
+      background: var(--container-bg);
+      border-bottom: 1px solid var(--border-color);
     }
-    .field {
-      flex: 1 1 140px;
-      min-width: 130px;
-    }
-    .field label {
-      font-size: 0.7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: #336b81;
-      display: block;
-      margin-bottom: 5px;
-    }
-    .input-card {
-      background: #f3f9fd;
-      border-radius: 20px;
-      border: 1px solid #cfdfe8;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-    }
-    .input-card input, .input-card select {
-      width: 100%;
-      border: none;
-      background: transparent;
-      padding: 11px 0;
-      font-size: 0.95rem;
-      font-weight: 500;
-      outline: none;
-      cursor: pointer;
-    }
-    .btn {
-      border: none;
-      padding: 9px 20px;
-      border-radius: 40px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #eef3f7;
-      transition: 0.2s;
-      font-size: 0.85rem;
-    }
+    .field { flex: 1 1 145px; min-width: 135px; }
+    .field label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--label-color); display: block; margin-bottom: 6px; letter-spacing: 0.3px; }
+    .input-card { background: var(--input-bg); border-radius: 24px; border: 1px solid var(--border-color); display: flex; align-items: center; padding: 0 14px; transition: 0.2s; }
+    .input-card:focus-within { border-color: #1f7b9e; box-shadow: 0 0 0 3px rgba(31,123,158,0.15); }
+    .input-card input, .input-card select { width: 100%; border: none; background: transparent; padding: 12px 0; font-size: 0.95rem; font-weight: 500; outline: none; color: var(--text-primary); }
+    .btn { border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
     .btn-primary { background: #1f7b9e; color: white; }
-    .btn-secondary { background: #e4edf2; color: #285f74; }
-    .eibor-panel {
-      background: #f8fbfd;
-      padding: 0.8rem 1.8rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      border-bottom: 1px solid #e2edf2;
-    }
-    .total-rate-badge {
-      background: #1e5f78;
-      color: white;
-      border-radius: 40px;
-      padding: 5px 14px;
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
+    .btn-primary:hover { background: #0e6583; transform: translateY(-1px); }
+    .btn-affiliate { background: #ffc107; color: #1a5f7a; font-weight: 800; }
+    .btn-secondary { background: #eef3f7; color: #2a5f74; border: 1px solid #cde0e8; }
+
+    /* Step & Prepay Panels - Clean consistent styling */
     .step-rate-panel, .prepay-master {
-      background: #f8fafc;
-      margin: 1rem 1.5rem;
+      background: var(--step-bg);
+      margin: 1rem 1.8rem;
       border-radius: 28px;
-      padding: 1.2rem;
-      border: 1px solid #e2edf2;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .step-rate-panel strong, .prepay-master strong {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: block;
+      margin-bottom: 1rem;
     }
     .step-row, .prepay-item {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      background: var(--card-bg);
+      padding: 10px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
     }
-    .step-input, .prepay-item input { flex: 1; min-width: 110px; padding: 8px 12px; border-radius: 24px; border: 1px solid #ccc; background: white; font-size: 0.85rem; }
-    .remove-prepay, .remove-step { background: #ffe0db; border: none; border-radius: 40px; padding: 6px 14px; cursor: pointer; font-weight: 600; }
-    .add-prepay-btn, #addStepBtn { background: #e7eef3; border: none; padding: 10px; border-radius: 40px; width: 100%; margin-top: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
-    .savings-badge { background: #e0f2e9; border-radius: 40px; padding: 6px 16px; font-size: 0.75rem; font-weight: 700; color: #1e6f5c; text-align: center; }
+    .step-input {
+      flex: 1;
+      min-width: 100px;
+    }
+    .step-input label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--label-color);
+      display: block;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .step-input input, .prepay-item input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      outline: none;
+    }
+    .step-input input:focus, .prepay-item input:focus {
+      border-color: #1f7b9e;
+    }
+    .remove-prepay, .remove-step { 
+      background: #ffe6e0; 
+      border: none; 
+      border-radius: 40px; 
+      padding: 8px 16px; 
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.75rem;
+      transition: 0.2s;
+    }
+    .remove-prepay:hover, .remove-step:hover { background: #ffccbb; }
+    body.dark .remove-prepay, body.dark .remove-step { background: #5a2a22; color: #ffaa88; }
+    .add-prepay-btn, #addStepBtn { 
+      background: #eef3f7; 
+      border: 1px solid var(--border-color); 
+      padding: 10px; 
+      border-radius: 40px; 
+      width: 100%; 
+      margin-top: 12px; 
+      cursor: pointer; 
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: 0.2s;
+    }
+    .add-prepay-btn:hover, #addStepBtn:hover { background: #e2eaf0; transform: translateY(-1px); }
+    .savings-badge { background: #e0f2e9; border-radius: 40px; padding: 6px 16px; font-size: 0.75rem; font-weight: 700; color: #1e6f5c; }
+
+    /* Partner Grid */
+    .partner-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      margin: 1rem 1.8rem;
+    }
+    .partner-card {
+      flex: 1;
+      min-width: 170px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: 0.2s;
+    }
+    .partner-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+
+    /* EIBOR Panel */
+    .eibor-panel {
+      background: var(--panel-bg);
+      padding: 0.9rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .total-rate-badge { background: #1e5f78; color: white; border-radius: 40px; padding: 6px 16px; font-weight: 700; font-size: 0.8rem; }
+
+    /* Summary Stats */
     .summary-strip {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      padding: 1.2rem 1.8rem;
-      background: #fafeff;
-      border-bottom: 1px solid #e0eef5;
+      gap: 16px;
+      padding: 1.2rem 2rem;
+      background: var(--panel-bg);
+      border-bottom: 1px solid var(--border-color);
     }
-    .stat-card {
-      background: white;
-      border-radius: 28px;
-      padding: 0.9rem 1.2rem;
-      flex: 1;
-      min-width: 130px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      border: 1px solid #e2edf2;
-    }
-    .stat-label { font-size: 0.7rem; font-weight: 700; color: #5f94a8; letter-spacing: 0.3px; }
-    .stat-number { font-size: 1.4rem; font-weight: 800; color: #0c4e6b; word-break: break-word; }
-    
-    /* ENLARGED CHARTS GRID - BIGGER & BETTER */
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.8rem;
-      margin-bottom: 2rem;
-    }
-    .chart-card {
-      background: white;
-      border-radius: 28px;
-      padding: 1.2rem;
-      border: 1px solid #e2edf5;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
-      transition: all 0.2s;
-    }
-    .chart-card h4 {
-      margin: 0 0 16px 0;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a5f7a;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-left: 4px solid #1f7b9e;
-      padding-left: 12px;
-    }
-    /* LARGER CANVAS dimensions */
-    .chart-card canvas {
-      max-height: 320px;
-      height: 320px;
-      width: 100%;
-    }
-    /* full-width for single chart on small screens */
-    @media (max-width: 900px) {
-      .charts-grid { grid-template-columns: 1fr; }
-      .chart-card canvas { height: 280px; }
-    }
-    .amort-wrapper { padding: 1.2rem 1.8rem 2rem; }
-    .table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid #e2edf0; margin-top: 1.5rem; }
+    .stat-card { background: var(--stat-bg); border-radius: 28px; padding: 1rem; flex: 1; min-width: 120px; border: 1px solid var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .stat-label { font-size: 0.7rem; font-weight: 700; color: var(--label-color); text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-number { font-size: 1.4rem; font-weight: 800; color: var(--text-primary); }
+
+    /* Charts */
+    .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 1.5rem 0; }
+    .chart-card { background: var(--card-bg); border-radius: 28px; padding: 1rem; border: 1px solid var(--border-color); }
+    .chart-card h4 { font-size: 0.85rem; margin-bottom: 12px; color: var(--text-secondary); }
+    canvas { max-height: 260px; width: 100%; }
+
+    /* Table */
+    .table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid var(--border-color); background: var(--card-bg); }
     .amort-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; min-width: 650px; }
-    .amort-table th, .amort-table td { padding: 12px 10px; text-align: right; border-bottom: 1px solid #eceff3; }
-    .text-left { text-align: left; font-weight: 600; color: #0a3f55; }
-    .footer-note { font-size: 0.65rem; text-align: center; color: #6c93a3; margin-top: 1.5rem; padding-top: 0.5rem; border-top: 1px solid #e2edf2; }
-    @media (max-width: 600px) {
-      .input-grid, .summary-strip { padding: 1rem; }
-      .step-row, .prepay-item { flex-direction: column; align-items: stretch; }
-      .chart-card canvas { height: 240px; }
-    }
+    .amort-table th, .amort-table td { padding: 12px; text-align: right; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+    .amort-table th { background: var(--panel-bg); font-weight: 700; color: var(--label-color); text-transform: uppercase; font-size: 0.7rem; }
+    .text-left { text-align: left; font-weight: 600; }
+
+    .amort-wrapper { padding: 1.2rem 2rem 2rem; }
+    .export-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 1rem; }
+    .footer-note { font-size: 0.65rem; text-align: center; color: var(--footer-color); padding-top: 1rem; margin-top: 1rem; border-top: 1px solid var(--border-color); }
+
+    @media (max-width: 950px) { .charts-grid { grid-template-columns: 1fr; } .sayed-phone { font-size: 1.2rem; padding: 8px 20px; } }
+    @media (max-width: 600px) { .input-grid, .summary-strip { padding: 1rem; } .step-row, .prepay-item { flex-direction: column; align-items: stretch; } }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
+
+<!-- FLOATING CONTACT BUTTON -->
+<a href="tel:+97152920786" class="floating-contact">
+  📞 Call Mr. Sayed Now
+</a>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="themeToggleBtn">🌓 Dark / Light Mode</button>
+
+<!-- POPUP MODAL -->
+<div id="contactPopup" class="popup-modal">
+  <div class="popup-content">
+    <span class="close-popup" id="closePopupBtn">&times;</span>
+    <div class="sayed-name" style="font-size:1.8rem;">Mr. Sayed</div>
+    <div style="font-size: 1rem; margin: 10px 0;">🏆 Senior Mortgage Advisor - 15+ Years</div>
+    <div class="sayed-phone" style="font-size:1.5rem; padding:8px 20px;">📞 +971 52 920 786</div>
+    <div style="margin: 15px 0;">✅ Free Consultation ✅ Best Rates ✅ Fast Approval</div>
+    <a href="tel:+97152920786" style="background:#27ae60; color:white; padding:12px 20px; border-radius:40px; text-decoration:none; display:inline-block; font-weight:700;">Call Now</a>
+    <div style="margin-top: 12px;">📱 WhatsApp: +971 52 920 786</div>
+  </div>
+</div>
+
 <div class="mortgage-container">
+  
   <div class="header">
-    <h1>🏡 Mortgage Pro <span style="font-size:0.9rem;">| Large Charts + Full Analytics</span></h1>
-    <div class="sub">Step-up/down • Fixed/Floating • Prepayments • Dynamic visualizations</div>
+    <h1>🏡 Mortgage Pro <span class="badge-pro">UAE | EIBOR + Step Rates</span></h1>
+    <div class="sub">Expert guidance by <strong>Mr. Sayed</strong> – 15+ years experience | 1000+ Happy Clients</div>
+  </div>
+
+  <!-- SAYED SECTION 1 -->
+  <div class="sayed-hero">
+    <div class="sayed-name">🎯 MR. SAYED – MORTGAGE EXPERT</div>
+    <div style="font-size:1rem; margin:5px;">📢 FREE Consultation | Best Rates Guaranteed | Zero Hidden Fees</div>
+    <div class="sayed-phone">📞 +971 52 920 786</div>
+    <div style="font-size:0.9rem;">💬 WhatsApp: +971 52 920 786 | 24/7 Support</div>
+  </div>
+
+  <!-- AFFILIATE PARTNERS -->
+  <div class="partner-grid">
+    <a href="#" class="partner-card" id="yubiLink" target="_blank"><div>🏦 Yubi</div><div style="font-size:0.7rem;">Compare 10+ banks</div></a>
+    <a href="#" class="partner-card" id="bankbazaarLink" target="_blank"><div>📊 BankBazaar</div><div style="font-size:0.7rem;">Instant rate check</div></a>
+    <a href="#" class="partner-card" id="paisabazaarLink" target="_blank"><div>💰 Paisabazaar</div><div style="font-size:0.7rem;">Free credit score</div></a>
+    <a href="#" class="partner-card" id="policybazaarLink" target="_blank"><div>🛡️ PolicyBazaar</div><div style="font-size:0.7rem;">Loan insurance</div></a>
+  </div>
+
+  <!-- SAYED SECTION 2 - Mini Banner -->
+  <div style="margin: 0 1.8rem 1rem 1.8rem; background: var(--panel-bg); border-radius: 28px; padding: 12px 20px; text-align: center; border: 2px solid #ffc107;">
+    <span style="font-weight:800;">📞 Need expert mortgage advice?</span> <strong style="color:#c0392b; font-size:1.1rem;">Call Mr. Sayed: +971 52 920 786</strong> (Free Assessment)
   </div>
 
   <div class="input-grid">
@@ -203,29 +420,37 @@
     <div class="field" id="fixedRateDiv" style="display:none;"><label>📌 Fixed Rate (%)</label><div class="input-card"><input type="number" id="fixedRate" value="4.5" step="0.1"><span>%</span></div></div>
     <div class="field" id="marginDiv"><label>➕ Bank Margin (%)</label><div class="input-card"><input type="number" id="marginRate" value="1.25" step="0.1"><span>%</span></div></div>
     <div><button class="btn btn-primary" id="refreshBtn">⟳ Update</button></div>
+    <div><button class="btn btn-affiliate" id="compareLoanBtn">🔍 Get Yubi Offers</button></div>
   </div>
 
-  <div class="eibor-panel" id="eiborPanel">
-    <div><span style="font-weight:600;">📡 EIBOR 3M:</span> <strong id="eiborValue">—%</strong> &nbsp;| Margin: <span id="marginDisplay">1.25</span>%</div>
+  <div class="eibor-panel">
+    <div><strong>📡 EIBOR 3M:</strong> <span id="eiborValue">—%</span> &nbsp;| Margin: <span id="marginDisplay">1.25</span>%</div>
     <div><span class="total-rate-badge" id="totalRateSpan">Total: —%</span></div>
-    <div id="eiborTimestamp" style="font-size:0.7rem;">—</div>
+    <div id="eiborTimestamp" style="font-size:0.7rem;">real-time market</div>
   </div>
 
-  <!-- Step Rates -->
+  <!-- SAYED SECTION 3 -->
+  <div style="background: #ffebc2; margin: 1rem 1.8rem; border-radius: 20px; padding: 12px; text-align: center; font-weight:700;">
+    🎯 <strong>Mr. Sayed's Direct Line:</strong> <span style="font-size:1.2rem;">📞 +971 52 920 786</span> | WhatsApp Available 24/7
+  </div>
+
+  <!-- STEP RATES PANEL - Clean consistent styling -->
   <div class="step-rate-panel">
-    <strong>📈 Step Up / Down Rates (periodic)</strong>
+    <strong>📈 Step Up / Down Rates (Custom rate periods)</strong>
     <div id="stepRatesList"></div>
-    <button id="addStepBtn" class="add-prepay-btn" style="width:auto; margin-top:8px;">+ Add Rate Period</button>
+    <button id="addStepBtn" class="add-prepay-btn">+ Add Rate Period</button>
   </div>
 
-  <!-- Prepayments -->
+  <!-- PREPAYMENT PANEL - Clean consistent styling -->
   <div class="prepay-master">
-    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center;"><strong>💰 Multiple Prepayments</strong><div class="savings-badge" id="multiSavingsMsg">Interest saved: —</div></div>
-    <div id="prepaymentsList" class="prepay-list"></div>
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
+      <strong>💰 Prepayments (Reduce Principal Early)</strong>
+      <div class="savings-badge" id="multiSavingsMsg">Interest saved: —</div>
+    </div>
+    <div id="prepaymentsList"></div>
     <button id="addPrepayBtn" class="add-prepay-btn">+ Add Prepayment</button>
   </div>
 
-  <!-- Summary Stats -->
   <div class="summary-strip">
     <div class="stat-card"><div class="stat-label">LOAN AMOUNT</div><div class="stat-number" id="loanAmountStat">—</div></div>
     <div class="stat-card"><div class="stat-label">MONTHLY PAYMENT</div><div class="stat-number" id="monthlyStat">—</div></div>
@@ -233,299 +458,161 @@
     <div class="stat-card"><div class="stat-label">TOTAL REPAYMENT</div><div class="stat-number" id="totalPaidStat">—</div></div>
   </div>
 
-  <!-- BIG CHARTS GRID (2x2) -->
   <div class="amort-wrapper">
+    <div class="export-buttons">
+      <button id="exportPDFBtn" class="btn btn-secondary">📄 Export PDF</button>
+      <button id="exportCSVBtn" class="btn btn-secondary">📊 Export CSV</button>
+    </div>
     <div class="charts-grid">
-      <div class="chart-card"><h4>📉 Remaining Balance & Principal Paid</h4><canvas id="balanceChartCanvas"></canvas></div>
-      <div class="chart-card"><h4>🍩 Interest vs Principal (Total)</h4><canvas id="pieChartCanvas"></canvas></div>
-      <div class="chart-card"><h4>📊 Annual Principal vs Interest</h4><canvas id="annualStackCanvas"></canvas></div>
-      <div class="chart-card"><h4>📈 Monthly Payment Breakdown (First 36 months)</h4><canvas id="monthlyStackCanvas"></canvas></div>
+      <div class="chart-card"><h4>📉 Remaining Balance & Cumulative Principal</h4><canvas id="balanceChartCanvas"></canvas></div>
+      <div class="chart-card"><h4>🍩 Total Interest vs Principal</h4><canvas id="pieChartCanvas"></canvas></div>
+      <div class="chart-card"><h4>📊 Annual Breakdown</h4><canvas id="annualStackCanvas"></canvas></div>
+      <div class="chart-card"><h4>📈 Monthly Payment (First 48 months)</h4><canvas id="monthlyStackCanvas"></canvas></div>
+    </div>
+    <div class="table-wrapper">
+      <table class="amort-table">
+        <thead><tr><th class="text-left">Month</th><th>Payment (AED)</th><th>Principal (AED)</th><th>Interest (AED)</th><th>Balance (AED)</th></tr></thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
     </div>
     
-    <div class="table-wrapper">
-      <table class="amort-table"><thead><tr><th class="text-left">Month</th><th>Payment (AED)</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="scheduleBody"></tbody></table>
+    <!-- SAYED SECTION 4 - Bottom -->
+    <div class="sayed-hero" style="margin: 2rem 0 1rem 0;">
+      <div class="sayed-name">🏆 MR. SAYED – YOUR MORTGAGE PARTNER</div>
+      <div style="font-size:1rem;">📞 Call or WhatsApp for Personalized Guidance</div>
+      <div class="sayed-phone">📞 +971 52 920 786</div>
+      <div style="font-size:0.9rem; margin-top:10px;">✅ Free Eligibility Check ✅ Document Assistance ✅ Fast Approvals</div>
     </div>
-    <div class="footer-note">* Step rates + prepayments affect amortization. Charts auto-update with all parameters. Larger canvas for better visibility.</div>
+    <div class="footer-note">* EIBOR simulated market movement. For expert mortgage advice, contact Mr. Sayed: +971 52 920 786</div>
   </div>
 </div>
 
 <script>
-  // ---------- EIBOR simulation ----------
+  // Popup after 3 seconds
+  setTimeout(() => { document.getElementById('contactPopup').style.display = 'flex'; }, 3000);
+  document.getElementById('closePopupBtn').onclick = () => document.getElementById('contactPopup').style.display = 'none';
+  window.onclick = (e) => { if(e.target === document.getElementById('contactPopup')) document.getElementById('contactPopup').style.display = 'none'; };
+
+  // Theme Toggle
+  const themeBtn = document.getElementById('themeToggleBtn');
+  themeBtn.onclick = () => {
+    document.body.classList.toggle('dark');
+    localStorage.setItem('mortgageTheme', document.body.classList.contains('dark') ? 'dark' : 'light');
+  };
+  if(localStorage.getItem('mortgageTheme') === 'dark') document.body.classList.add('dark');
+
+  // Affiliate Links
+  const links = {
+    yubi: "https://www.yubi.co/?utm_source=mortgagepro",
+    bankbazaar: "https://www.bankbazaar.com/home-loan.html?aff=mortgagepro",
+    paisabazaar: "https://www.paisabazaar.com/home-loan/?src=mortgagepro",
+    policybazaar: "https://www.policybazaar.ae/home-insurance/?aff=mortgagepro"
+  };
+  document.getElementById('yubiLink').href = links.yubi;
+  document.getElementById('bankbazaarLink').href = links.bankbazaar;
+  document.getElementById('paisabazaarLink').href = links.paisabazaar;
+  document.getElementById('policybazaarLink').href = links.policybazaar;
+  document.getElementById('compareLoanBtn').onclick = () => window.open(links.yubi, '_blank');
+
+  // Mortgage Calculation Engine
   let currentEibor = 4.85;
   let eiborInterval = null;
-  
-  // DOM elements
-  const propertyInput = document.getElementById('propertyVal');
-  const downPaymentInput = document.getElementById('downPayment');
-  const yearsInput = document.getElementById('loanYears');
-  const rateTypeSelect = document.getElementById('rateTypeSelect');
-  const fixedRateInput = document.getElementById('fixedRate');
-  const marginInput = document.getElementById('marginRate');
-  const refreshBtn = document.getElementById('refreshBtn');
-  const eiborSpan = document.getElementById('eiborValue');
-  const marginDisplaySpan = document.getElementById('marginDisplay');
-  const totalRateSpan = document.getElementById('totalRateSpan');
-  const eiborTimestampSpan = document.getElementById('eiborTimestamp');
-  const multiSavingsMsg = document.getElementById('multiSavingsMsg');
-  const fixedRateDiv = document.getElementById('fixedRateDiv');
-  const marginDiv = document.getElementById('marginDiv');
-  const eiborPanel = document.getElementById('eiborPanel');
-  const loanAmountStat = document.getElementById('loanAmountStat');
-  const monthlyStat = document.getElementById('monthlyStat');
-  const totalInterestStat = document.getElementById('totalInterestStat');
-  const totalPaidStat = document.getElementById('totalPaidStat');
-  const scheduleBody = document.getElementById('scheduleBody');
-  
-  let currentBalanceChart = null, currentPieChart = null, currentAnnualChart = null, currentMonthlyStack = null;
+  let currentBalanceChart, currentPieChart, currentAnnualChart, currentMonthlyStack;
   let prepaymentsArray = [{ month: 12, amount: 50000 }, { month: 24, amount: 30000 }];
-  let stepRatesArray = [
-    { startMonth: 1, endMonth: 60, rate: 4.25 },
-    { startMonth: 61, endMonth: 300, rate: 5.0 }
-  ];
-  
-  function formatAEDdec(val) { return new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(val); }
+  let stepRatesArray = [{ startMonth: 1, endMonth: 60, rate: 4.25 }, { startMonth: 61, endMonth: 300, rate: 5.0 }];
+
+  const propertyInput = document.getElementById('propertyVal'), downPaymentInput = document.getElementById('downPayment'), yearsInput = document.getElementById('loanYears');
+  const rateTypeSelect = document.getElementById('rateTypeSelect'), fixedRateInput = document.getElementById('fixedRate'), marginInput = document.getElementById('marginRate');
+  const refreshBtn = document.getElementById('refreshBtn'), eiborSpan = document.getElementById('eiborValue'), marginDisplaySpan = document.getElementById('marginDisplay');
+  const totalRateSpan = document.getElementById('totalRateSpan'), multiSavingsMsg = document.getElementById('multiSavingsMsg');
+  const loanAmountStat = document.getElementById('loanAmountStat'), monthlyStat = document.getElementById('monthlyStat');
+  const totalInterestStat = document.getElementById('totalInterestStat'), totalPaidStat = document.getElementById('totalPaidStat'), scheduleBody = document.getElementById('scheduleBody');
+
   function formatAED(v) { return new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 2 }).format(v); }
-  
-  function getMonthlyRateForMonth(month, getAnnualBaseFunc) {
-    let baseAnnual = getAnnualBaseFunc(month);
-    for (let step of stepRatesArray) {
-      if (month >= step.startMonth && month <= step.endMonth) return step.rate / 100 / 12;
+  function formatShort(v) { return new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED', minimumFractionDigits: 0 }).format(v); }
+
+  function getMonthlyRateForMonth(month, getBase) { let base = getBase(month); for(let s of stepRatesArray) if(month>=s.startMonth && month<=s.endMonth) return s.rate/100/12; return base/100/12; }
+  function getAnnualBase(month) { return rateTypeSelect.value==='fixed' ? (parseFloat(fixedRateInput.value)||4.5) : currentEibor + (parseFloat(marginInput.value)||1.25); }
+
+  function computeSchedule(principal, totalMonths, prepays) {
+    if(principal<=0) return {schedule:[], monthlyPayment:0, totalInterest:0, totalPaid:0, savedInterest:0};
+    const firstRate = getMonthlyRateForMonth(1, getAnnualBase);
+    let monthlyPayment = firstRate===0 ? principal/totalMonths : principal * firstRate * Math.pow(1+firstRate, totalMonths) / (Math.pow(1+firstRate, totalMonths)-1);
+    if(isNaN(monthlyPayment)) monthlyPayment = principal/totalMonths;
+    let origInterest=0, bal=principal;
+    for(let m=1; m<=totalMonths && bal>0.01; m++) { let r=getMonthlyRateForMonth(m, getAnnualBase); let int=bal*r; let prin=monthlyPayment-int; if(m===totalMonths||prin>bal) prin=bal; if(prin<0) prin=0; origInterest+=Math.max(0,int); bal-=prin; }
+    const sorted = [...prepays].filter(p=>p.amount>0 && p.month>=1).sort((a,b)=>a.month-b.month);
+    let balance=principal, schedule=[], totalInt=0, idx=0;
+    for(let month=1; month<=totalMonths+240; month++) {
+      if(balance<=0.001) break;
+      let prepaid=0;
+      while(idx<sorted.length && sorted[idx].month===month) { let extra=Math.min(sorted[idx].amount, balance); if(extra>0) { balance-=extra; prepaid+=extra; } idx++; }
+      if(balance<0) balance=0;
+      let rate = getMonthlyRateForMonth(month, getAnnualBase);
+      let intPay = balance * rate;
+      let prinPay = monthlyPayment - intPay;
+      if(balance - prinPay < 0.01 || prinPay<=0) { prinPay=balance; intPay=monthlyPayment-prinPay; if(intPay<0) intPay=0; }
+      if(prinPay>balance) prinPay=balance; if(prinPay<0) prinPay=0;
+      intPay=Math.max(0,intPay);
+      totalInt+=intPay;
+      balance-=prinPay;
+      schedule.push({period:month, payment:monthlyPayment, principal:prinPay, interest:intPay, remainingBalance:balance, prepayExtra:prepaid});
+      if(balance<=0.001) break;
     }
-    return baseAnnual / 100 / 12;
+    const totalPaid = schedule.reduce((s,r)=>s+r.payment,0) + sorted.reduce((s,p)=>s+p.amount,0);
+    return {schedule, monthlyPayment, totalInterest:totalInt, totalPaid, savedInterest:Math.max(0, origInterest-totalInt)};
   }
-  
-  function computeMortgageStepMulti(principal, totalMonths, getAnnualRateFunc, prepaymentsList) {
-    if (principal <= 0) return { schedule: [], monthlyPayment: 0, totalInterest: 0, totalPaid: 0, savedInterest: 0 };
-    const firstMonthlyRate = getMonthlyRateForMonth(1, getAnnualRateFunc);
-    let monthlyPayment = 0;
-    if (firstMonthlyRate === 0) monthlyPayment = principal / totalMonths;
-    else {
-      const factor = Math.pow(1 + firstMonthlyRate, totalMonths);
-      monthlyPayment = principal * firstMonthlyRate * factor / (factor - 1);
-    }
-    if (isNaN(monthlyPayment)) monthlyPayment = principal / totalMonths;
-    
-    // original interest (without prepay)
-    let origInterest = 0, balOrig = principal;
-    for (let m = 1; m <= totalMonths && balOrig > 0.01; m++) {
-      const r = getMonthlyRateForMonth(m, getAnnualRateFunc);
-      let intTemp = balOrig * r;
-      let prinTemp = monthlyPayment - intTemp;
-      if (m === totalMonths || prinTemp > balOrig) prinTemp = balOrig;
-      if (prinTemp < 0) prinTemp = 0;
-      origInterest += Math.max(0, intTemp);
-      balOrig -= prinTemp;
-    }
-    
-    const sortedPrepays = [...prepaymentsList].filter(p => p.amount > 0 && p.month >= 1).sort((a,b)=>a.month-b.month);
-    let balance = principal, schedule = [], totalInterestActual = 0, activeIdx = 0, maxMonths = totalMonths + 240;
-    for (let month = 1; month <= maxMonths; month++) {
-      if (balance <= 0.001) break;
-      let prepaidTotal = 0;
-      while (activeIdx < sortedPrepays.length && sortedPrepays[activeIdx].month === month) {
-        let extra = Math.min(sortedPrepays[activeIdx].amount, balance);
-        if (extra > 0) { balance -= extra; prepaidTotal += extra; }
-        activeIdx++;
-      }
-      if (balance < 0) balance = 0;
-      const monthlyRateCurr = getMonthlyRateForMonth(month, getAnnualRateFunc);
-      let interestPayment = balance * monthlyRateCurr;
-      let principalPayment = monthlyPayment - interestPayment;
-      if (balance - principalPayment < 0.01 || principalPayment <= 0) {
-        principalPayment = balance;
-        interestPayment = monthlyPayment - principalPayment;
-        if (interestPayment < 0) interestPayment = 0;
-      }
-      if (principalPayment > balance) principalPayment = balance;
-      if (principalPayment < 0) principalPayment = 0;
-      interestPayment = Math.max(0, interestPayment);
-      totalInterestActual += interestPayment;
-      balance -= principalPayment;
-      if (balance < 0) balance = 0;
-      schedule.push({ period: month, payment: monthlyPayment, principal: principalPayment, interest: interestPayment, remainingBalance: balance, prepayExtra: prepaidTotal });
-      if (balance <= 0.001) break;
-      if (month > totalMonths + 180) break;
-    }
-    const totalPaid = schedule.reduce((sum,r)=>sum + r.payment,0) + sortedPrepays.reduce((sum,p)=>sum+p.amount,0);
-    return { schedule, monthlyPayment, totalInterest: totalInterestActual, totalPaid, savedInterest: Math.max(0, origInterest - totalInterestActual) };
-  }
-  
-  function getCurrentAnnualRateForMonth(month) {
-    if (rateTypeSelect.value === 'fixed') {
-      let fixed = parseFloat(fixedRateInput.value);
-      return isNaN(fixed) ? 4.5 : fixed;
-    } else {
-      let margin = parseFloat(marginInput.value);
-      return currentEibor + (isNaN(margin) ? 1.25 : margin);
-    }
-  }
-  
-  // ENHANCED Charts with larger dimensions and better styling
-  function renderAllCharts(schedule, monthlyPayment, totalInterest, totalPrincipal) {
-    // 1. Balance & cumulative principal (line) - BIG
-    const labels = schedule.map(r => `M${r.period}`);
-    const balances = schedule.map(r => r.remainingBalance);
-    let cumP = 0, cumArr = [];
-    for (let r of schedule) { cumP += r.principal; cumArr.push(cumP); }
-    if (currentBalanceChart) currentBalanceChart.destroy();
-    const ctxBal = document.getElementById('balanceChartCanvas').getContext('2d');
-    currentBalanceChart = new Chart(ctxBal, {
-      type: 'line', data: { labels, datasets: [
-        { label: 'Remaining Balance', data: balances, borderColor: '#1f7b9e', backgroundColor: 'rgba(31,123,158,0.08)', borderWidth: 3, fill: true, tension: 0.2, pointRadius: 0 },
-        { label: 'Cumulative Principal Paid', data: cumArr, borderColor: '#44b39c', borderWidth: 2.5, borderDash: [8,6], fill: false, tension: 0.2, pointRadius: 0 }
-      ] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top', labels: { font: { size: 11, weight: 'bold' } } }, tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatAED(ctx.raw)}` } } }, scales: { y: { ticks: { callback: (v) => formatAED(v), font: { size: 10 } }, title: { display: true, text: 'Amount (AED)', font: { size: 11 } } }, x: { ticks: { maxTicksLimit: 12, font: { size: 9 } }, title: { display: true, text: 'Month', font: { size: 11 } } } } }
-    });
-    
-    // 2. Pie chart (larger)
-    if (currentPieChart) currentPieChart.destroy();
-    const ctxPie = document.getElementById('pieChartCanvas').getContext('2d');
-    currentPieChart = new Chart(ctxPie, {
-      type: 'pie', data: { labels: ['Total Principal Paid', 'Total Interest Paid'], datasets: [{ data: [totalPrincipal, totalInterest], backgroundColor: ['#2c7a5e', '#e2a65e'], borderWidth: 0, hoverOffset: 12 }] },
-      options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right', labels: { font: { size: 12, weight: '500' } } }, tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${formatAED(ctx.raw)} (${((ctx.raw/(totalPrincipal+totalInterest))*100).toFixed(1)}%)` } } } }
-    });
-    
-    // 3. Annual Stacked Bar - bigger bars
+
+  function renderAllCharts(schedule, totalInterest, totalPrincipal) {
+    const labels = schedule.map(r=>`M${r.period}`), balances = schedule.map(r=>r.remainingBalance);
+    let cum=0, cumArr=[]; for(let r of schedule) { cum+=r.principal; cumArr.push(cum); }
+    if(currentBalanceChart) currentBalanceChart.destroy();
+    currentBalanceChart = new Chart(document.getElementById('balanceChartCanvas'), { type:'line', data:{labels, datasets:[{label:'Remaining Balance', data:balances, borderColor:'#1f7b9e', backgroundColor:'rgba(31,123,158,0.05)', fill:true, pointRadius:0},{label:'Cumulative Principal', data:cumArr, borderColor:'#44b39c', borderDash:[6,6], fill:false}]}, options:{responsive:true}});
+    if(currentPieChart) currentPieChart.destroy();
+    currentPieChart = new Chart(document.getElementById('pieChartCanvas'), { type:'pie', data:{labels:['Principal','Interest'], datasets:[{data:[totalPrincipal, totalInterest], backgroundColor:['#2c7a5e','#e2a65e']}]}, options:{responsive:true}});
     const annualMap = new Map();
-    for (let row of schedule) {
-      const year = Math.ceil(row.period / 12);
-      if (!annualMap.has(year)) annualMap.set(year, { principal: 0, interest: 0 });
-      let data = annualMap.get(year);
-      data.principal += row.principal;
-      data.interest += row.interest;
-    }
-    const yearsSorted = Array.from(annualMap.keys()).sort((a,b)=>a-b);
-    const annualPrincipals = yearsSorted.map(y => annualMap.get(y).principal);
-    const annualInterests = yearsSorted.map(y => annualMap.get(y).interest);
-    if (currentAnnualChart) currentAnnualChart.destroy();
-    const ctxAnnual = document.getElementById('annualStackCanvas').getContext('2d');
-    currentAnnualChart = new Chart(ctxAnnual, {
-      type: 'bar', data: { labels: yearsSorted.map(y => `Year ${y}`), datasets: [
-        { label: 'Principal Paid', data: annualPrincipals, backgroundColor: '#2c7a5e', borderRadius: 8, barPercentage: 0.7 },
-        { label: 'Interest Paid', data: annualInterests, backgroundColor: '#e2a65e', borderRadius: 8, barPercentage: 0.7 }
-      ] }, options: { responsive: true, maintainAspectRatio: true, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, ticks: { callback: (v) => formatAED(v), font: { size: 10 } }, title: { display: true, text: 'Amount (AED)' } } }, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatAED(ctx.raw)}` } }, legend: { position: 'top', labels: { font: { size: 11 } } } } }
-    });
-    
-    // 4. Monthly payment breakdown: first 48 months or full for better visibility
-    const maxMonths = Math.min(48, schedule.length);
-    const monthLabels = schedule.slice(0, maxMonths).map(r => r.period);
-    const monthlyPrincipals = schedule.slice(0, maxMonths).map(r => r.principal);
-    const monthlyInterests = schedule.slice(0, maxMonths).map(r => r.interest);
-    if (currentMonthlyStack) currentMonthlyStack.destroy();
-    const ctxMonthStack = document.getElementById('monthlyStackCanvas').getContext('2d');
-    currentMonthlyStack = new Chart(ctxMonthStack, {
-      type: 'bar', data: { labels: monthLabels, datasets: [
-        { label: 'Principal Payment', data: monthlyPrincipals, backgroundColor: '#1f7b9e', borderRadius: 6, barPercentage: 0.8 },
-        { label: 'Interest Payment', data: monthlyInterests, backgroundColor: '#f4b942', borderRadius: 6, barPercentage: 0.8 }
-      ] }, options: { responsive: true, maintainAspectRatio: true, scales: { x: { title: { display: true, text: 'Month', font: { size: 10 } }, ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 24 } }, y: { ticks: { callback: (v) => formatAED(v) }, title: { display: true, text: 'Amount (AED)' } } }, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatAED(ctx.raw)}` } }, legend: { position: 'top', labels: { font: { size: 10 } } } } }
-    });
+    for(let r of schedule) { let y=Math.ceil(r.period/12); if(!annualMap.has(y)) annualMap.set(y,{principal:0,interest:0}); let d=annualMap.get(y); d.principal+=r.principal; d.interest+=r.interest; }
+    const years = Array.from(annualMap.keys()).sort();
+    if(currentAnnualChart) currentAnnualChart.destroy();
+    currentAnnualChart = new Chart(document.getElementById('annualStackCanvas'), { type:'bar', data:{labels:years.map(y=>`Y${y}`), datasets:[{label:'Principal', data:years.map(y=>annualMap.get(y).principal), backgroundColor:'#2c7a5e'},{label:'Interest', data:years.map(y=>annualMap.get(y).interest), backgroundColor:'#e2a65e'}]}, options:{responsive:true, scales:{x:{stacked:true}, y:{stacked:true}}}});
+    const maxM = Math.min(48, schedule.length);
+    if(currentMonthlyStack) currentMonthlyStack.destroy();
+    currentMonthlyStack = new Chart(document.getElementById('monthlyStackCanvas'), { type:'bar', data:{labels:schedule.slice(0,maxM).map(r=>r.period), datasets:[{label:'Principal', data:schedule.slice(0,maxM).map(r=>r.principal), backgroundColor:'#1f7b9e'},{label:'Interest', data:schedule.slice(0,maxM).map(r=>r.interest), backgroundColor:'#f4b942'}]}, options:{responsive:true}});
   }
-  
+
   function fullRender() {
-    let property = parseFloat(propertyInput.value) || 800000;
-    let down = parseFloat(downPaymentInput.value) || 0;
-    let years = parseInt(yearsInput.value) || 25;
-    if (down > property) down = property * 0.2;
-    let principal = property - down;
-    if (principal <= 0) principal = 50000;
-    if (years > 35) years = 35;
-    const totalMonths = years * 12;
-    
-    const isFloating = rateTypeSelect.value === 'floating';
-    marginDiv.style.display = isFloating ? 'block' : 'none';
-    fixedRateDiv.style.display = isFloating ? 'none' : 'block';
-    eiborPanel.style.display = isFloating ? 'flex' : 'none';
-    if (isFloating) {
-      let marginVal = parseFloat(marginInput.value) || 1.25;
-      marginDisplaySpan.innerText = marginVal.toFixed(2);
-      totalRateSpan.innerText = `Total: ${(currentEibor + marginVal).toFixed(3)}%`;
-    } else {
-      let fixedVal = parseFloat(fixedRateInput.value) || 4.5;
-      totalRateSpan.innerText = `Fixed: ${fixedVal.toFixed(2)}%`;
-    }
-    
-    const validPrepays = prepaymentsArray.filter(p => p.amount > 0 && p.month > 0);
-    const { schedule, monthlyPayment, totalInterest, totalPaid, savedInterest } = computeMortgageStepMulti(principal, totalMonths, getCurrentAnnualRateForMonth, validPrepays);
-    const totalPrincipal = schedule.reduce((sum, r) => sum + r.principal, 0);
-    
-    loanAmountStat.innerText = formatAEDdec(principal);
-    monthlyStat.innerText = formatAED(monthlyPayment);
-    totalInterestStat.innerText = formatAED(totalInterest);
-    totalPaidStat.innerText = formatAED(totalPaid);
-    multiSavingsMsg.innerHTML = savedInterest > 0 ? `💡 Saved: ${formatAED(savedInterest)}` : `📌 No prepayment saving`;
-    
-    if (!schedule.length) { scheduleBody.innerHTML = '<tr><td colspan="5">No data</td></tr>'; return; }
-    let html = '';
-    for (let s of schedule) {
-      const prepayFlag = s.prepayExtra > 0 ? ' 🟢' : '';
-      html += `<tr><td class="text-left">${s.period}${prepayFlag}</td><td>${formatAED(s.payment)}</td><td>${formatAED(s.principal)}</td><td>${formatAED(s.interest)}</td><td>${formatAED(s.remainingBalance)}</td></tr>`;
-    }
+    let property = parseFloat(propertyInput.value)||800000, down = parseFloat(downPaymentInput.value)||0, years = parseInt(yearsInput.value)||25;
+    if(down>property) down=property*0.2;
+    let principal = property-down; if(principal<=0) principal=50000;
+    const totalMonths = years*12;
+    const isFloat = rateTypeSelect.value==='floating';
+    document.getElementById('marginDiv').style.display = isFloat ? 'block' : 'none';
+    document.getElementById('fixedRateDiv').style.display = isFloat ? 'none' : 'block';
+    if(isFloat) { let margin=parseFloat(marginInput.value)||1.25; marginDisplaySpan.innerText=margin.toFixed(2); totalRateSpan.innerText=`Total: ${(currentEibor+margin).toFixed(3)}%`; }
+    else { totalRateSpan.innerText=`Fixed: ${(parseFloat(fixedRateInput.value)||4.5).toFixed(2)}%`; }
+    const validPrepays = prepaymentsArray.filter(p=>p.amount>0 && p.month>0);
+    const {schedule, monthlyPayment, totalInterest, totalPaid, savedInterest} = computeSchedule(principal, totalMonths, validPrepays);
+    const totalPrincipal = schedule.reduce((s,r)=>s+r.principal,0);
+    loanAmountStat.innerText = formatShort(principal); monthlyStat.innerText = formatAED(monthlyPayment);
+    totalInterestStat.innerText = formatAED(totalInterest); totalPaidStat.innerText = formatAED(totalPaid);
+    multiSavingsMsg.innerHTML = savedInterest>0 ? `💡 Saved: ${formatAED(savedInterest)}` : `📌 No prepayment saving`;
+    if(!schedule.length) { scheduleBody.innerHTML='<tr><td colspan="5">No data</td></tr>'; return; }
+    let html=''; for(let s of schedule) { html+=`<tr><td class="text-left">${s.period}${s.prepayExtra>0?' 🟢':''}</td><td>${formatAED(s.payment)}</td><td>${formatAED(s.principal)}</td><td>${formatAED(s.interest)}</td><td>${formatAED(s.remainingBalance)}</td></tr>`; }
     scheduleBody.innerHTML = html;
-    renderAllCharts(schedule, monthlyPayment, totalInterest, totalPrincipal);
+    renderAllCharts(schedule, totalInterest, totalPrincipal);
   }
+
+  function renderPrepaysUI() { const c=document.getElementById('prepaymentsList'); c.innerHTML=''; if(!prepaymentsArray.length) prepaymentsArray.push({month:12,amount:0}); prepaymentsArray.forEach((p,idx)=>{ const d=document.createElement('div'); d.className='prepay-item'; d.innerHTML=`<input type="number" class="prepay-month" value="${p.month}" step="1" min="1" placeholder="Month"><input type="number" class="prepay-amount" value="${p.amount}" step="10000" placeholder="Amount (AED)"><button class="remove-prepay">🗑 Remove</button>`; d.querySelector('.prepay-month').onchange=e=>{p.month=parseInt(e.target.value)||1; fullRender();}; d.querySelector('.prepay-amount').onchange=e=>{p.amount=parseFloat(e.target.value)||0; fullRender();}; d.querySelector('.remove-prepay').onclick=()=>{if(prepaymentsArray.length>1){prepaymentsArray.splice(idx,1); renderPrepaysUI(); fullRender();} else {p.amount=0; renderPrepaysUI(); fullRender();}}; c.appendChild(d); }); }
+  function renderStepRatesUI() { const c=document.getElementById('stepRatesList'); c.innerHTML=''; stepRatesArray.forEach((step,idx)=>{ const d=document.createElement('div'); d.className='step-row'; d.innerHTML=`<div class="step-input"><label>FROM MONTH</label><input type="number" class="step-start" value="${step.startMonth}"></div><div class="step-input"><label>TO MONTH</label><input type="number" class="step-end" value="${step.endMonth}"></div><div class="step-input"><label>RATE (%)</label><input type="number" class="step-rate" value="${step.rate}" step="0.1"></div><button class="remove-step">✖ Remove</button>`; d.querySelector('.step-start').onchange=e=>{step.startMonth=parseInt(e.target.value)||1; stepRatesArray.sort((a,b)=>a.startMonth-b.startMonth); renderStepRatesUI(); fullRender();}; d.querySelector('.step-end').onchange=e=>{step.endMonth=parseInt(e.target.value)||step.startMonth+1; fullRender();}; d.querySelector('.step-rate').onchange=e=>{step.rate=parseFloat(e.target.value)||0; fullRender();}; d.querySelector('.remove-step').onclick=()=>{stepRatesArray.splice(idx,1); renderStepRatesUI(); fullRender();}; c.appendChild(d); }); }
+
+  refreshBtn.onclick = () => fullRender();
+  document.getElementById('addPrepayBtn').onclick = () => { prepaymentsArray.push({month:36, amount:40000}); renderPrepaysUI(); fullRender(); };
+  document.getElementById('addStepBtn').onclick = () => { stepRatesArray.push({startMonth:1, endMonth:12, rate:4.0}); renderStepRatesUI(); fullRender(); };
+  document.getElementById('exportPDFBtn').onclick = () => { const element = document.querySelector('.table-wrapper'); html2pdf().from(element).set({ margin: 0.5, filename: 'mortgage_schedule.pdf' }).save(); };
+  document.getElementById('exportCSVBtn').onclick = () => { let csv = "Month,Payment,Principal,Interest,Balance\n"; const rows = document.querySelectorAll('#scheduleBody tr'); rows.forEach(row=>{ const cols=row.querySelectorAll('td'); if(cols.length) csv+=`${cols[0].innerText},${cols[1].innerText},${cols[2].innerText},${cols[3].innerText},${cols[4].innerText}\n`; }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='amortization.csv'; a.click(); };
   
-  // Prepayments UI
-  function renderPrepaysUI() {
-    const container = document.getElementById('prepaymentsList');
-    container.innerHTML = '';
-    if (prepaymentsArray.length === 0) prepaymentsArray.push({ month: 12, amount: 0 });
-    prepaymentsArray.forEach((p, idx) => {
-      const div = document.createElement('div'); div.className = 'prepay-item';
-      div.innerHTML = `<input type="number" class="prepay-month" value="${p.month}" step="1" min="1" placeholder="Month"><input type="number" class="prepay-amount" value="${p.amount}" step="10000" placeholder="Amount (AED)"><button class="remove-prepay" data-idx="${idx}">🗑 Remove</button>`;
-      const monthInp = div.querySelector('.prepay-month');
-      const amtInp = div.querySelector('.prepay-amount');
-      monthInp.addEventListener('change', (e) => { p.month = parseInt(e.target.value) || 1; fullRender(); });
-      amtInp.addEventListener('change', (e) => { p.amount = parseFloat(e.target.value) || 0; fullRender(); });
-      div.querySelector('.remove-prepay').addEventListener('click', () => { if (prepaymentsArray.length > 1) { prepaymentsArray.splice(idx,1); renderPrepaysUI(); fullRender(); } else { p.amount=0; p.month=12; renderPrepaysUI(); fullRender(); } });
-      container.appendChild(div);
-    });
-  }
-  function addPrepayment() { prepaymentsArray.push({ month: 36, amount: 40000 }); renderPrepaysUI(); fullRender(); }
-  
-  // Step rates UI
-  function renderStepRatesUI() {
-    const container = document.getElementById('stepRatesList');
-    container.innerHTML = '';
-    stepRatesArray.forEach((step, idx) => {
-      const div = document.createElement('div'); div.className = 'step-row';
-      div.innerHTML = `<div class="step-input"><label>From Month</label><input type="number" class="step-start" value="${step.startMonth}"></div><div class="step-input"><label>To Month</label><input type="number" class="step-end" value="${step.endMonth}"></div><div class="step-input"><label>Rate %</label><input type="number" class="step-rate" value="${step.rate}" step="0.1"></div><button class="remove-step" data-idx="${idx}">✖</button>`;
-      const startInp = div.querySelector('.step-start'), endInp = div.querySelector('.step-end'), rateInp = div.querySelector('.step-rate');
-      startInp.addEventListener('change', (e) => { step.startMonth = parseInt(e.target.value) || 1; stepRatesArray.sort((a,b)=>a.startMonth-b.startMonth); renderStepRatesUI(); fullRender(); });
-      endInp.addEventListener('change', (e) => { step.endMonth = parseInt(e.target.value) || step.startMonth+1; fullRender(); });
-      rateInp.addEventListener('change', (e) => { step.rate = parseFloat(e.target.value) || 0; fullRender(); });
-      div.querySelector('.remove-step').addEventListener('click', () => { stepRatesArray.splice(idx,1); renderStepRatesUI(); fullRender(); });
-      container.appendChild(div);
-    });
-  }
-  function addStep() { stepRatesArray.push({ startMonth: 1, endMonth: 12, rate: 4.0 }); renderStepRatesUI(); fullRender(); }
-  
-  // EIBOR simulation
-  function updateEibor(newVal) { currentEibor = Math.min(8.2, Math.max(1.2, newVal)); eiborSpan.innerText = currentEibor.toFixed(3)+'%'; fullRender(); }
-  function simulateEiborTick() { let change = (Math.random()-0.5)*0.06; let newVal = currentEibor + change + (4.7-currentEibor)*0.02; newVal = Math.min(7.5, Math.max(2.0, newVal)); eiborTimestampSpan.innerText = new Date().toLocaleTimeString(); updateEibor(newVal); }
-  function startEiborUpdates() { updateEibor(4.85); if(eiborInterval) clearInterval(eiborInterval); eiborInterval = setInterval(simulateEiborTick, 35000); }
-  
-  function resetDefaults() {
-    propertyInput.value = '1250000'; downPaymentInput.value = '250000'; yearsInput.value = '25'; marginInput.value = '1.25'; fixedRateInput.value = '4.5'; rateTypeSelect.value = 'floating';
-    stepRatesArray = [{ startMonth:1, endMonth:60, rate:4.25 }, { startMonth:61, endMonth:300, rate:5.0 }];
-    prepaymentsArray = [{ month:12, amount:50000 }, { month:24, amount:30000 }];
-    renderStepRatesUI(); renderPrepaysUI(); fullRender();
-  }
-  
-  function bindEvents() {
-    refreshBtn.addEventListener('click', () => fullRender());
-    rateTypeSelect.addEventListener('change', () => fullRender());
-    marginInput.addEventListener('input', () => fullRender());
-    fixedRateInput.addEventListener('input', () => fullRender());
-    propertyInput.addEventListener('input', () => fullRender());
-    downPaymentInput.addEventListener('input', () => fullRender());
-    yearsInput.addEventListener('input', () => fullRender());
-    document.getElementById('addPrepayBtn').addEventListener('click', addPrepayment);
-    document.getElementById('addStepBtn').addEventListener('click', addStep);
-    const resetBtn = document.createElement('button'); resetBtn.innerText = '🔄 Reset All'; resetBtn.className = 'btn btn-secondary'; resetBtn.addEventListener('click', resetDefaults);
-    document.querySelector('.input-grid').appendChild(resetBtn);
-  }
-  
-  function init() { bindEvents(); renderStepRatesUI(); renderPrepaysUI(); startEiborUpdates(); fullRender(); }
-  init();
+  setInterval(() => { let newVal = currentEibor + (Math.random()-0.5)*0.06 + (4.7-currentEibor)*0.02; newVal=Math.min(7.5,Math.max(2,newVal)); currentEibor=newVal; eiborSpan.innerText=currentEibor.toFixed(3)+'%'; fullRender(); }, 35000);
+  renderStepRatesUI(); renderPrepaysUI(); fullRender();
 </script>
 </body>
 </html>
